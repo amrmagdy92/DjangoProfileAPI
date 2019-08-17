@@ -17,7 +17,6 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", host_ip: "127.0.0.1", guest: 8080, host: 8080
 
   config.vm.provision "shell", inline: <<-SHELL
-    export DEBIAN_FRONTEND=noninteractive
     # Update and upgrade the server packages.
     sudo apt-get update
     sudo apt-get -y upgrade
@@ -26,9 +25,9 @@ Vagrant.configure("2") do |config|
     # Install Python, SQLite and pip
     sudo apt-get install -y python3-dev sqlite python-pip
     # Upgrade pip to the latest version.
-    sudo pip3 install --upgrade pip
+    sudo pip install --upgrade pip
     # Install and configure python virtualenvwrapper.
-    sudo pip3 install virtualenvwrapper
+    sudo pip install virtualenvwrapper
     if ! grep -q VIRTUALENV_ALREADY_ADDED /home/ubuntu/.bashrc; then
         echo "# VIRTUALENV_ALREADY_ADDED" >> /home/ubuntu/.bashrc
         echo "WORKON_HOME=~/.virtualenvs" >> /home/ubuntu/.bashrc
