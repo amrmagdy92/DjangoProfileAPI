@@ -2,44 +2,15 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUSer
+from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 
 # Create your models here.
 
-class UserProfile(AbstractBaseUSer, PermissionsMixin):
-    #Represents a user profile inside this system
-
-    email = models.EmailField(max_length=255, unique=True)
-    name = models.CharField(max_length=255)
-    firstName = models.CharField(max_length=255)
-    lastName = models.CharField(max_length=255)
-    isActive = models.BooleanField(default=True)
-    isStaff = models.BooleanField(default=False)
-
-    #The below is an object manager
-    object = UserProfileManager()
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name']
-
-    def getFullName(self):
-        #This function returns a user's full name
-        return self.name
-
-    def getShortName(self):
-        #This function returns a short name for the user
-        shortName = f"{self.firstName} {self.lastName}"
-        return shortName
-
-    def __str__(self):
-        #Django uses this to convert the object into a nice readable form
-        return self.email
-
 class UserProfileManager(BaseUserManager):
-    #Helps django work with our custom base user model
-    def createUser(self, email, password=none, name, firstName, lastName):
+    # Helps django work with our custom base user model
+    def createUser(self, email, name, firstName, lastName, password=None):
         # creates a suer that matches our model
         if not email:
             raise ValueError("Please provide an email address")
@@ -64,3 +35,32 @@ class UserProfileManager(BaseUserManager):
         user.isStaff = True
 
         user.save(using=self._db)
+
+class UserProfile(AbstractBaseUser, PermissionsMixin):
+    # Represents a user profile inside this system
+    email = models.EmailField(max_length=255, unique=True)
+    name = models.CharField(max_length=255)
+    firstName = models.CharField(max_length=255)
+    lastName = models.CharField(max_length=255)
+    isActive = models.BooleanField(default=True)
+    isStaff = models.BooleanField(default=False)
+
+    # The below is an object manager
+    object = UserProfileManager()
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['name']
+
+    def getFullName(self):
+        # This function returns a user's full name
+        return self.name
+
+    def getShortName(self):
+        # This function returns a short name for the user
+        # the next commented line needs some work as it has a syntax error
+        #shortName = f"{self.firstName} {self.lastName}"
+        return self.name
+
+    def __str__(self):
+        # Django uses this to convert the object into a nice readable form
+        return self.email
