@@ -10,14 +10,14 @@ from django.contrib.auth.models import BaseUserManager
 
 class UserProfileManager(BaseUserManager):
     # Helps django work with our custom base user model
-    def createUser(self, email, name, firstName, lastName, password=None):
+    def createUser(self, email, name, password=None):
         # creates a suer that matches our model
         if not email:
             raise ValueError("Please provide an email address")
 
         # The normalize_email function is there only to ensure that all emails in our system are standardized
         email = self.normalize_email(email)
-        user = self.model(email=email, name=name, firstName=firstName, lastName=lastName)
+        user = self.model(email=email, name=name)
 
         # The set_password function creates a hash value for the password given and stores it in our database
         user.set_password(password)
@@ -27,9 +27,9 @@ class UserProfileManager(BaseUserManager):
 
         return user
 
-    def createSuperUser(self, email, password, name, firstName, lastName):
+    def create_superuser(self, email, password, name):
         # creates a super user who is basically someone who can access anything on the server
-        user = self.createUser(email=email, password=password, name=lastName, firstName=firstName,lastName=lastName)
+        user = self.createUser(email=email, password=password, name=name)
 
         user.isSuperUser = True
         user.isStaff = True
@@ -40,8 +40,6 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     # Represents a user profile inside this system
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
-    firstName = models.CharField(max_length=255)
-    lastName = models.CharField(max_length=255)
     isActive = models.BooleanField(default=True)
     isStaff = models.BooleanField(default=False)
 
@@ -57,8 +55,6 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
     def getShortName(self):
         # This function returns a short name for the user
-        # the next commented line needs some work as it has a syntax error
-        #shortName = f"{self.firstName} {self.lastName}"
         return self.name
 
     def __str__(self):
