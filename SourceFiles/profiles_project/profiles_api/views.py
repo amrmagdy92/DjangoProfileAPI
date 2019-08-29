@@ -12,6 +12,7 @@ class HelloAPIView(APIView):
 
     def get(self, request, format=None):
         # returns a list of API Features
+        # this is typically where some of the app logic goes
         an_apiview = [
             'Uses HTTP functions as functions',
             'Similar to a traditional Django View',
