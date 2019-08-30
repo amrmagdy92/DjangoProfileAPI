@@ -35,5 +35,4 @@ class HelloAPIView(APIView):
             message = 'Hello, {0}'.format(name)
             return Response({'message': message})
         else:
-            # doesn't handle errors properly
-            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
