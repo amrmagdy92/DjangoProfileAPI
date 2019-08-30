@@ -2,13 +2,18 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+from . import serializers
 
 # Create your views here.
 # this is basically the logic behind our application
 class HelloAPIView(APIView):
     # testing APIView
+
+    serializer_class = serializers.HelloSerializers
 
     def get(self, request, format=None):
         # returns a list of API Features
@@ -21,3 +26,13 @@ class HelloAPIView(APIView):
         ]
 
         return Response({'message': 'Hello', ', APIView': an_apiview})
+
+    def post(self, request):
+        # create a hello message with a name posted to the API
+        serializer = serializers.HelloSerializers(data=request.data)
+        if serializer.is_valid():
+            name = serializer.data.get('name')
+            message = 'Hello, {0}'.format(name)
+            return Response({'message': message})
+        else:
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
