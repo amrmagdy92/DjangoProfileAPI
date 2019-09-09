@@ -75,3 +75,19 @@ class HelloViewSets(viewsets.ViewSet):
             return Response({'message': message})
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def retrieve(self, request, pk=None):
+        # Handles the retrieval of an object with its ID
+        return Response({'This corresponds to http method': 'GET'})
+
+    def update(self, request, pk=None):
+        # Handles the update of an object in the database
+        return Response({'This corresponds to http method': 'PUT'})
+
+    def partial_update(self, request, pk=None):
+        # handles the partial update of an object in the database
+        return Response({'This corresponds to http method': 'PATCH'})
+
+    def destory(self, request, pk=None):
+        # handles the deletion of an object from the database
+        return Response({'This corresponds to http method': 'DELETE'})
