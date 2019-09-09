@@ -52,6 +52,9 @@ class HelloAPIView(APIView):
 
 class HelloViewSets(viewsets.ViewSet):
     # Testing viewsets
+
+    serializer_class = serializers.HelloSerializers
+
     def list(self, request):
         # returns a hello message
         a_viewset = [
@@ -61,3 +64,14 @@ class HelloViewSets(viewsets.ViewSet):
         ]
 
         return Response({'message': 'Hello', ',ViewSet': a_viewset})
+
+    def create(self, request):
+        # handles the creation of a new object in our database
+        serializer = serializers.HelloSerializers(data=request.data)
+
+        if serializer.is_valid():
+            name = serializer.data.get('name')
+            message = 'Hello, {0}'.format(name)
+            return Response({'message': message})
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

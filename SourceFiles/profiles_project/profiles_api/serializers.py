@@ -5,4 +5,4 @@ from rest_framework import serializers
 class HelloSerializers(serializers.Serializer):
     # serializes a name field to test an APIView
 
-    name = serializers.CharField(max_length=10)
+    name = serializers.CharField(max_length=20)
