@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from rest_framework import status
+from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -48,3 +49,15 @@ class HelloAPIView(APIView):
     def delete(self, request, pk=None):
         # Handles deletion of an object
         return Response({'method': 'delete'})
+
+class HelloViewSets(viewsets.ViewSet):
+    # Testing viewsets
+    def list(self, request):
+        # returns a hello message
+        a_viewset = [
+        'Uses actions list, create, retrieve, update, partial_update methods',
+        'Automatically routes to URLs using routers',
+        'Provide more functionality with less code'
+        ]
+
+        return Response({'message': 'Hello', ',ViewSet': a_viewset})
