@@ -7,6 +7,10 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.authtoken.views import ObtainAuthToken
+
+from rest_framework import filters
 
 from . import serializers
 from . import models
@@ -97,8 +101,20 @@ class HelloViewSets(viewsets.ViewSet):
 
 # This class is for the profiles APIs
 class UserProfileViewSet(viewsets.ModelViewSet):
-    # our serializer
+    # These variables are what control our API
     serializer_class = serializers.UserProfileSerializer
     queryset = models.UserProfile.object.all()
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.UpdateOwnProfile,)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('email', 'name',)
+
+# This class acts as the login API wrapper
+class LoginViewSet(viewsets.ViewSet):
+    # checks the email and password combo and returns an auth token
+    serializer_class = AuthTokenSerializer
+
+    def create(self, request):
+        # uses the ObtainAuthToken APIView to validate and create a token
+        # This uses a post function (duh!!!)
+        return ObtainAuthToken().post(request)
