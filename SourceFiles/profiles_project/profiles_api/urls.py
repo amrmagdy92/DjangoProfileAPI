@@ -7,6 +7,7 @@ from . import views
 
 router = DefaultRouter()
 router.register('hello-viewset', views.HelloViewSets, base_name='hello-viewset')
+router.register('profile', views.UserProfileViewSet)
 # this file basically maps a certain keyword in the url to a certain APIView
 urlpatterns = [
     url(r'^hello-view/', views.HelloAPIView.as_view()),

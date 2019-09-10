@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from . import serializers
+from . import models
 
 # Create your views here.
 # this is basically the logic behind our application
@@ -91,3 +92,9 @@ class HelloViewSets(viewsets.ViewSet):
     def destory(self, request, pk=None):
         # handles the deletion of an object from the database
         return Response({'This corresponds to http method': 'DELETE'})
+
+# This class is for the profiles APIs
+class UserProfileViewSet(viewsets.ModelViewSet):
+    # our serializer
+    serializer_class = serializers.UserProfileSerializer
+    queryset = models.UserProfile.object.all()
