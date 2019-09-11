@@ -124,7 +124,7 @@ class LoginViewSet(viewsets.ViewSet):
 # This class acts as the profile feed API
 class UserProfileFeedViewSet(viewsets.ModelViewSet):
     # handles authentication
-    authentication_class = (TokenAuthentication,)
+    authentication_classes = (TokenAuthentication,)
 
     # The serializer for this API
     serializer_class = serializers.ProfileFeedSerializer
