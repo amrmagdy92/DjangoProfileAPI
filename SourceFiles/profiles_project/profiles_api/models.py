@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 
-# Create your models here.
+# Models are typically created in this file.
 
 class UserProfileManager(BaseUserManager):
     # Helps django work with our custom base user model
@@ -57,5 +57,24 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         return self.name
 
     def __str__(self):
-        # Django uses this to convert the object into a nice readable form
+        # Django uses this to return a nice readable string which in our case is the email.
+        # This is used when asking python to print the object
+        # This can be anything deoending on the use case
         return self.email
+# a class to for the items in the feed
+class ProfileFeedItem(models.Model):
+    # Profile status update
+
+    # This variable just gets the id of the user.
+    # It also asks the models to delete anything related to this key if the user profile is deleted
+    user_profile = models.ForeignKey('UserProfile', on_delete=models.CASCADE)
+    # This variable is used to store the feed text.
+    status_text = models.CharField(max_length=255)
+    # This variable is used to store the date when the feed was created
+    # The auto_now_add parameter is what adds the date of creation to the field unless specifically mentioned otherwise
+    creation_date = models.DateTimeField(auto_now_add=True)
+
+    # A description of the object
+    def __str__(self):
+        # returns a nice readable string.
+        return self.status_text
