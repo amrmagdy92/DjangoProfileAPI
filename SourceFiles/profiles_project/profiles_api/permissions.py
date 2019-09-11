@@ -9,3 +9,11 @@ class UpdateOwnProfile(permissions.BasePermission):
             return True
         else:
             return obj.id == request.user.id
+
+class PostOwnStatus(permissions.BasePermission):
+    # A class to restrict posting of a status update to logged users only
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissinos.SAFE_METHODS:
+            return True
+        else:
+            return obj.user_profile.id == request.user.id
