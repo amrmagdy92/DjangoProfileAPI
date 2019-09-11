@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
+
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.views import APIView
@@ -9,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from rest_framework import filters
 
@@ -129,6 +131,9 @@ class UserProfileFeedViewSet(viewsets.ModelViewSet):
 
     # The query for this API
     queryset = models.ProfileFeedItem.objects.all()
+
+    # Permission classes
+    permission_classes = (permissions.PostOwnStatus, IsAuthenticatedOrReadOnly)
 
     def perform_create(self, serializer):
         # sets the user profile to the logged in user
